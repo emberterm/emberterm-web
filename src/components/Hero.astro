@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import shot from '../assets/screenshot.png';
-import { VERSION, WIN_URL, MAC_URL, MSI_URL, REPO_URL } from '../release';
+import { VERSION, WIN_URL, MAC_URL, MSI_URL, REPO_URL, WIN_SIZE, MAC_SIZE } from '../release';
 ---
 <section id="top" class="hero">
   <p class="badge fu" style="animation-delay:0s">Open source · MIT · Windows &amp; macOS</p>
@@ -10,14 +10,14 @@ import { VERSION, WIN_URL, MAC_URL, MSI_URL, REPO_URL } from '../release';
   <div class="dls fu" style="animation-delay:.36s">
     <a class="btn dl btn-p" data-os="windows" href={WIN_URL}>
       <span>Download for Windows</span>
-      <span class="meta">v{VERSION} · .exe installer</span>
+      <span class="meta">v{VERSION} · .exe installer{WIN_SIZE && ` · ${WIN_SIZE}`}</span>
     </a>
     <a class="btn dl btn-s" data-os="mac" href={MAC_URL}>
       <span>Download for macOS</span>
-      <span class="meta">v{VERSION} · universal .dmg</span>
+      <span class="meta">v{VERSION} · universal .dmg{MAC_SIZE && ` · ${MAC_SIZE}`}</span>
     </a>
   </div>
-  <p class="note fu" style="animation-delay:.48s">Latest release: v{VERSION}.<a href={`${REPO_URL}/releases`}>All releases</a> · <a href={MSI_URL}>Windows .msi</a></p>
+  <p class="note fu" style="animation-delay:.48s">Latest release: v{VERSION}. <a href={`${REPO_URL}/releases`}>All releases</a> · <a href={MSI_URL}>Windows .msi</a></p>
 </section>
 <section class="shotwrap">
   <div class="shot">
