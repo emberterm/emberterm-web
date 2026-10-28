@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import shot from '../assets/screenshot.png';
+import { VERSION, WIN_URL, MAC_URL, MSI_URL, REPO_URL } from '../release';
+---
+<section id="top" class="hero">
+  <p class="badge fu" style="animation-delay:0s">Open source · MIT · Windows &amp; macOS</p>
+  <h1 class="fu" style="animation-delay:.12s">The terminal that remembers where you left off.</h1>
+  <p class="sub fu" style="animation-delay:.24s">EmberTerm is a fast, lightweight terminal built for daily use. Many tabs with a shell each, split panes, and your last session back the moment you reopen it. No account, no telemetry.</p>
+  <div class="dls fu" style="animation-delay:.36s">
+    <a class="btn dl btn-p" data-os="windows" href={WIN_URL}>
+      <span>Download for Windows</span>
+      <span class="meta">v{VERSION} · .exe installer</span>
+    </a>
+    <a class="btn dl btn-s" data-os="mac" href={MAC_URL}>
+      <span>Download for macOS</span>
+      <span class="meta">v{VERSION} · universal .dmg</span>
+    </a>
+  </div>
+  <p class="note fu" style="animation-delay:.48s">Latest release: v{VERSION}.<a href={`${REPO_URL}/releases`}>All releases</a> · <a href={MSI_URL}>Windows .msi</a></p>
+</section>
+<section class="shotwrap">
+  <div class="shot">
+    <Image src={shot} alt="EmberTerm window with two tabs and a split pane" widths={[640, 960, 1200]} sizes="(min-width: 1160px) 1116px, calc(100vw - 68px)" format="webp" loading="eager" fetchpriority="high" />
+  </div>
+</section>
+<script>
+  // Progressive enhancement: both buttons stay visible, the visitor's OS just
+  // gets the primary style (and first position).
+  if (/Mac|iPhone|iPad/i.test(navigator.userAgent) && !/Windows/i.test(navigator.userAgent)) {
+    const win = document.querySelector<HTMLElement>('[data-os="windows"]');
+    const mac = document.querySelector<HTMLElement>('[data-os="mac"]');
+    if (win && mac) {
+      win.classList.replace('btn-p', 'btn-s');
+      mac.classList.replace('btn-s', 'btn-p');
+      mac.style.order = '-1';
+    }
+  }
+</script>
+<style>
+  .hero { position: relative; max-width: var(--max); margin: 0 auto; padding: 72px 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .badge { margin: 0 0 24px; font-family: var(--font-mono); font-size: 13px; color: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 6px 14px; }
+  h1 { font-size: clamp(40px, 7vw, 76px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 700; max-width: 920px; text-wrap: balance; }
+  .sub { margin-top: 28px; font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 660px; text-wrap: pretty; }
+  .dls { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+  .dl { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 26px; min-height: 44px; font-weight: 700; font-size: 17px; background: var(--surface); }
+  .dl.btn-p { background: var(--accent); }
+  .meta { font-family: var(--font-mono); font-weight: 500; font-size: 12px; }
+  .dl.btn-s .meta { color: var(--muted); }
+  .note { margin-top: 20px; font-size: 14px; color: var(--dim); max-width: 640px; }
+  .note a { display: inline-block; padding: 8px 0; }
+  .shotwrap { position: relative; max-width: var(--max); margin: 0 auto; padding: 40px 24px 0; }
+  .shot { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-deep); padding: 10px; animation: float 8s ease-in-out 0.6s infinite, glow 4s ease-in-out 0.6s infinite; }
+  .shot :global(img) { display: block; width: 100%; height: auto; border-radius: 8px; }
+</style>

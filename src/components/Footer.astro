@@ -1,0 +1,24 @@
+---
+import Flame from './Flame.astro';
+import { REPO_URL } from '../release';
+const links = [
+  ['Theming', 'blob/main/docs/theming.md'],
+  ['Architecture', 'blob/main/CLAUDE.md'],
+  ['Changelog', 'blob/main/CHANGELOG.md'],
+  ['Security', 'blob/main/SECURITY.md'],
+  ['Releases', 'releases'],
+];
+---
+<footer>
+  <div class="brand"><Flame width={16} height={20} /><span>EmberTerm · MIT License</span></div>
+  <nav aria-label="Project links">
+    {links.map(([label, path]) => <a href={`${REPO_URL}/${path}`}>{label}</a>)}
+  </nav>
+</footer>
+<style>
+  footer { position: relative; max-width: var(--max); margin: 0 auto; padding: 72px 24px 48px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; font-size: 14px; color: var(--dim); }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  nav { display: flex; flex-wrap: wrap; gap: 0 24px; }
+  nav a { color: var(--muted); display: inline-flex; align-items: center; min-height: 44px; }
+  nav a:hover { color: var(--accent-hover); }
+</style>

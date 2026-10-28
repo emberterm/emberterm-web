@@ -1,0 +1,81 @@
+---
+import { themes } from '../lib/content';
+
+const first = themes[0];
+const vars = (t: typeof first) =>
+  `--t-bg:${t.bg};--t-fg:${t.fg};--t-red:${t.red};--t-green:${t.green};--t-yellow:${t.yellow};--t-blue:${t.blue};--t-magenta:${t.magenta};--t-cyan:${t.cyan}`;
+const swatches = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan'];
+---
+<section id="themes" class="wrap">
+  <div class="rv panel">
+    <div class="copy">
+      <div>
+        <p class="eyebrow">THEMES</p>
+        <h2 class="h2">Seven built in. Bring any VS Code theme.</h2>
+        <p class="lead">Themes use VS Code-compatible JSON, so paste one in under Settings and it sticks. Switch from the command palette with Ctrl+Shift+P. Try a few here.</p>
+      </div>
+      <div class="chips" id="theme-chips">
+        {themes.map((t, i) => <button type="button" class="chip" aria-pressed={i === 0 ? 'true' : 'false'}>{t.name}</button>)}
+      </div>
+    </div>
+    <div class="themeterm" id="theme-term" style={vars(first)}>
+      <div><span class="blue">❯ </span>ls</div>
+      <div><span class="cyan">packages  docs  scripts</span>  README.md</div>
+      <div><span class="blue">❯ </span>git status</div>
+      <div>On branch <span class="magenta">main</span></div>
+      <div class="green">nothing to commit, working tree clean</div>
+      <div><span class="blue">❯ </span>cargo test</div>
+      <div><span class="yellow">warning:</span> 1 warning emitted</div>
+      <div class="red">error: could not compile `example`</div>
+      <div class="foot">
+        <span class="tname" data-theme-name>{first.name}</span>
+        {swatches.map((c) => <span class="sw" style={`background:var(--t-${c})`}></span>)}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  import { themes } from '../lib/content';
+
+  const term = document.getElementById('theme-term')!;
+  const name = term.querySelector('[data-theme-name]')!;
+  const chips = document.querySelectorAll<HTMLButtonElement>('#theme-chips .chip');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const keys = ['bg', 'fg', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan'] as const;
+  let timer: ReturnType<typeof setInterval> | undefined;
+
+  const apply = (i: number) => {
+    const t = themes[i];
+    keys.forEach((k) => term.style.setProperty(`--t-${k}`, t[k]));
+    name.textContent = t.name;
+    chips.forEach((c, j) => c.setAttribute('aria-pressed', String(j === i)));
+  };
+
+  // A click is an explicit choice, so it ends the auto-cycle for good.
+  chips.forEach((c, i) => c.addEventListener('click', () => {
+    clearInterval(timer);
+    apply(i);
+  }));
+
+  if (!reduce) {
+    let cur = 0;
+    timer = setInterval(() => apply((cur = (cur + 1) % themes.length)), 3040);
+  }
+</script>
+<style>
+  .panel { border: 1px solid var(--border-subtle); background: var(--bg-deep); border-radius: 16px; padding: clamp(28px, 5vw, 56px); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); gap: 40px; align-items: center; }
+  .copy { display: flex; flex-direction: column; gap: 24px; }
+  .h2 { margin-bottom: 20px; font-size: clamp(28px, 4vw, 40px); line-height: 1.12; }
+  .lead { font-size: 17px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { font-family: var(--font-mono); font-size: 13px; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; min-height: 44px; background: var(--bg); cursor: pointer; transition: border-color 0.2s, transform 0.2s; }
+  .chip:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .chip[aria-pressed='true'] { border-color: var(--accent); background: var(--accent-tint); }
+  .themeterm { background: var(--t-bg); color: var(--t-fg); border: 1px solid var(--border); border-radius: 12px; padding: 22px 24px; font-family: var(--font-mono); font-size: 14px; line-height: 1.8; min-width: 0; overflow-x: auto; transition: background 0.5s, color 0.5s; }
+  .themeterm span { transition: color 0.5s, background 0.5s; }
+  .blue { color: var(--t-blue); } .cyan { color: var(--t-cyan); } .magenta { color: var(--t-magenta); }
+  .green { color: var(--t-green); } .yellow { color: var(--t-yellow); } .red { color: var(--t-red); }
+  .foot { margin-top: 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .tname { font-size: 12px; }
+  .sw { width: 22px; height: 22px; border-radius: 5px; }
+</style>

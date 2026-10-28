@@ -1,0 +1,25 @@
+---
+import { hood } from '../lib/content';
+---
+<section class="wrap">
+  <div class="rv">
+    <p class="eyebrow">UNDER THE HOOD</p>
+    <h2 class="h2 title">Small and native-feeling.</h2>
+    <p class="lead intro">A Rust core on Tauri 2 with a Svelte 5 interface and xterm.js rendering through WebGL. PTY output is batched and acknowledged, so heavy output stays responsive.</p>
+  </div>
+  <div class="rv grid" style="--col:240px">
+    {hood.map((h) => (
+      <div class="card">
+        <h3>{h.title}</h3>
+        <p>{h.body}</p>
+      </div>
+    ))}
+  </div>
+</section>
+<style>
+  .title { margin-bottom: 20px; max-width: 760px; }
+  .intro { margin-bottom: 48px; max-width: 720px; }
+  .card { padding: 24px; }
+  h3 { margin-bottom: 8px; font-size: 17px; font-weight: 600; }
+  .card p { font-size: 15px; color: var(--muted); }
+</style>

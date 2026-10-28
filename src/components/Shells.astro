@@ -1,0 +1,84 @@
+---
+import { demoFrame, SHELLS, STATIC_TICK } from '../lib/demo';
+
+// Server-render the finished frame so no-JS and reduced-motion visitors see a
+// complete terminal; the script below takes over only when motion is allowed.
+const frame = demoFrame(STATIC_TICK);
+---
+<section class="wrap split" style="align-items:center">
+  <div class="rv">
+    <p class="eyebrow">YOUR SHELLS</p>
+    <h2 class="h2 title">Pick a shell per tab. Even per pane.</h2>
+    <p class="lead">Choose Git Bash, WSL, PowerShell or cmd from the arrow beside the plus, or set a default profile. Split any tab side by side or stacked and run a different shell in each half. Folders are restored for Git Bash, WSL and PowerShell, and a tab warns you before closing on a running program.</p>
+  </div>
+  <div class="rv term" id="demo" role="img" aria-label="Animated demo of EmberTerm tabs running Git Bash, WSL and PowerShell, then restoring the session after a restart">
+    <div class="tabs">
+      {SHELLS.map((name, i) => (
+        <div class="tab" data-on={i === frame.activeTab}><span class="dot"></span>{name}</div>
+      ))}
+    </div>
+    <div class="body" data-lines>
+      {frame.lines.map((l) => (
+        <div class="ln"><span class="p">{l.prompt}</span><span class={`t t-${l.kind}`}>{l.text}</span>{l.cursor && <span class="cur"></span>}</div>
+      ))}
+    </div>
+    <div class="status">
+      <span data-status-left>{frame.status.shell} · {frame.status.dir}</span>
+      <span data-status-right>{frame.status.right}</span>
+    </div>
+  </div>
+</section>
+<script>
+  import { demoFrame, TICK_MS } from '../lib/demo';
+
+  const root = document.getElementById('demo');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (root && !reduce) {
+    const tabs = root.querySelectorAll<HTMLElement>('.tab');
+    const body = root.querySelector('[data-lines]')!;
+    const left = root.querySelector('[data-status-left]')!;
+    const right = root.querySelector('[data-status-right]')!;
+    let tick = 0;
+
+    const el = (cls: string, text = '') => {
+      const s = document.createElement('span');
+      s.className = cls;
+      s.textContent = text;
+      return s;
+    };
+
+    const draw = () => {
+      const f = demoFrame(tick++);
+      tabs.forEach((t, i) => (t.dataset.on = String(i === f.activeTab)));
+      body.replaceChildren(...f.lines.map((l) => {
+        const row = document.createElement('div');
+        row.className = 'ln';
+        row.append(el('p', l.prompt), el(`t t-${l.kind}`, l.text));
+        if (l.cursor) row.append(el('cur'));
+        return row;
+      }));
+      left.textContent = `${f.status.shell} · ${f.status.dir}`;
+      right.textContent = f.status.right;
+    };
+
+    draw();
+    setInterval(draw, TICK_MS);
+  }
+</script>
+<style>
+  .title { margin-bottom: 20px; }
+  .term { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; font-family: var(--font-mono); font-size: 14px; min-width: 0; box-shadow: 0 30px 80px -40px rgba(255, 107, 53, 0.35); }
+  .tabs { display: flex; background: var(--bg-deep); border-bottom: 1px solid var(--border-subtle); overflow: hidden; }
+  .tab { display: flex; align-items: center; gap: 8px; padding: 11px 16px; font-size: 13px; white-space: nowrap; background: var(--bg-deep); color: var(--dim); border-bottom: 2px solid transparent; border-right: 1px solid var(--border-subtle); }
+  .tab[data-on='true'] { background: var(--bg); color: var(--text); border-bottom-color: var(--accent); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--dim); }
+  .tab[data-on='true'] .dot { background: var(--ok); }
+  .body { padding: 20px 22px; min-height: 232px; line-height: 1.75; }
+  .status { display: flex; justify-content: space-between; gap: 12px; padding: 9px 16px; background: var(--bg-deep); border-top: 1px solid var(--border-subtle); font-size: 12px; color: var(--dim); }
+  /* Lines are re-created by the script, so their styles must be global. */
+  .body :global(.ln) { white-space: pre-wrap; word-break: break-word; min-height: 1.75em; }
+  .body :global(.p), .body :global(.t-r) { color: var(--accent); }
+  .body :global(.t-c) { color: var(--text); }
+  .body :global(.t-o) { color: var(--muted); }
+  .body :global(.cur) { display: inline-block; width: 0.6em; height: 1.1em; background: var(--accent); vertical-align: text-bottom; margin-left: 2px; animation: blink 1s steps(1) infinite; }
+</style>

@@ -1,0 +1,21 @@
+---
+import Flame from './Flame.astro';
+import { REPO_URL } from '../release';
+---
+<header>
+  <a class="logo" href="#top"><Flame width={22} height={28} inner /> EmberTerm</a>
+  <nav aria-label="Main">
+    <a href="#features">Features</a>
+    <a href="#themes">Themes</a>
+    <a href="#install">Install</a>
+    <a class="btn btn-s gh" href={REPO_URL}>GitHub</a>
+  </nav>
+</header>
+<style>
+  header { position: relative; max-width: var(--max); margin: 0 auto; padding: 20px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; min-height: 44px; }
+  nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; font-size: 15px; font-weight: 500; }
+  nav a:not(.gh) { color: var(--muted); display: inline-flex; align-items: center; min-height: 44px; }
+  nav a:not(.gh):hover { color: var(--accent-hover); }
+  .gh { padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 500; }
+</style>

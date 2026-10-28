@@ -1,0 +1,11 @@
+---
+import { ticker } from '../lib/content';
+---
+<section aria-hidden="true">
+  <div class="mq">{ticker.map((w) => <span>{w}</span>)}</div>
+</section>
+<style>
+  section { position: relative; margin-top: 96px; overflow: hidden; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); padding: 18px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .mq { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+  span { font-family: var(--font-mono); font-size: 14px; color: var(--dim); white-space: nowrap; padding: 0 28px; }
+</style>

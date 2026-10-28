@@ -1,0 +1,19 @@
+---
+import { REPO_URL } from '../release';
+---
+<section class="wrap rv">
+  <div class="box">
+    <h2 class="h2">Open source, MIT licensed, built in the open.</h2>
+    <p class="lead">Read the code, file an issue, or send a pull request. The contributing guide covers code style, versioning and releases.</p>
+    <div class="acts">
+      <a class="btn btn-p btn-lg" href={REPO_URL}>View on GitHub</a>
+      <a class="btn btn-s btn-lg" href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}>Contributing guide</a>
+    </div>
+  </div>
+</section>
+<style>
+  .box { border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: clamp(32px, 6vw, 72px); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+  .h2 { max-width: 680px; font-size: clamp(30px, 4.4vw, 48px); }
+  .lead { max-width: 600px; }
+  .acts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 8px; }
+</style>

@@ -1,0 +1,46 @@
+---
+import { WIN_URL, MSI_URL, MAC_URL } from '../release';
+---
+<section id="install" class="wrap">
+  <div class="rv">
+    <p class="eyebrow">INSTALL</p>
+    <h2 class="h2 title">Download, run, done. Updates happen inside the app.</h2>
+  </div>
+  <div class="rv grid" style="--col:340px">
+    <div class="card pad">
+      <h3>Windows</h3>
+      <p>Windows is the primary target. WebView2 is preinstalled on Windows 11.</p>
+      <p>Builds are not code-signed, so SmartScreen may ask you to confirm the first run.</p>
+      <div class="acts">
+        <a class="btn btn-p btn-md" href={WIN_URL}>Download .exe</a>
+        <a class="btn btn-s btn-md" href={MSI_URL}>.msi</a>
+      </div>
+    </div>
+    <div class="card pad">
+      <h3>macOS</h3>
+      <p>A universal build that runs on Apple silicon and Intel.</p>
+      <p>The app is ad-hoc signed and not notarized, so macOS may ask you to confirm the first launch.</p>
+      <div class="acts">
+        <a class="btn btn-p btn-md" href={MAC_URL}>Download .dmg</a>
+      </div>
+    </div>
+    <div class="card pad src">
+      <h3>From source</h3>
+      <p>Needs Rust 1.85+, Node.js 22+ and pnpm 9+.</p>
+      <pre>git clone https://github.com/emberterm/emberterm
+cd emberterm
+pnpm install
+pnpm dev</pre>
+    </div>
+  </div>
+</section>
+<style>
+  .title { margin-bottom: 48px; }
+  .card { border-color: var(--border); border-radius: 14px; }
+  .pad { padding: 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .src { background: var(--bg-deep); }
+  h3 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; }
+  p { font-size: 15px; color: var(--muted); }
+  .acts { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; padding-top: 8px; }
+  pre { margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--text); background: var(--bg); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 16px; overflow-x: auto; }
+</style>
